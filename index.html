@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALMARI Shoppings - Cart</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6f7;
+  color: #222;
+}
+
+.header {
+  background: #111;
+  color: white;
+  padding: 22px 15px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.header p {
+  margin: 7px 0 0;
+  color: #ddd;
+}
+
+.offer {
+  background: #18a957;
+  color: white;
+  margin: 15px auto;
+  max-width: 900px;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.offer .big {
+  font-size: 21px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 10px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.product {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 15px;
+}
+
+.product img {
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-top: 7px;
+}
+
+.price {
+  color: #159447;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.quantity button {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  background: #111;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.quantity span {
+  min-width: 30px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.payment-note {
+  background: #fff3cd;
+  border: 1px solid #ffe08a;
+  padding: 15px;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+.total-box {
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 9px 0;
+}
+
+.grand {
+  font-size: 23px;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  padding-top: 12px;
+}
+
+.place-order {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: white;
+  font-size: 19px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.place-order:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
+
+.message {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.success {
+  background: #d9f7e5;
+  padding: 18px;
+  border-radius: 10px;
+  margin-top: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .product {
+    align-items: flex-start;
+  }
+
+  .product img {
+    width: 95px;
+    height: 95px;
+  }
+
+  .product-name {
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>ALMARI Shoppings</h1>
+  <p>Easy & Secure Online Order</p>
+</div>
+
+<div class="offer">
+  <div class="big">🎉 SPECIAL LIMITED OFFER 🎉</div>
+  <div>FREE DELIVERY IN PUNJAB</div>
+  <div>Offer valid until January 1, 2027</div>
+</div>
+
+<div class="container">
+
+<!-- PRODUCTS -->
+<div class="card">
+  <h2>🛍️ Select Products</h2>
+
+  <!-- PRODUCT 1 -->
+  <div class="product">
+    <img
+      src="https://raw.githubusercontent.com/zaidxyz78686-png/ALMARIShoppings-Cart./refs/heads/main/WhatsApp%20Image%202026-08-16%20at%2016.36.21.jpeg"
+      alt="Knocks Glow Gluta White Cream">
+
+    <div class="product-info">
+      <div class="product-name">
+        Knocks Glow Gluta White Cream
+      </div>
+
+      <div class="old-price">Original Price: Rs. 1,200</div>
+      <div class="price">Rs. 550</div>
+
+      <div class="quantity">
+        <button onclick="changeQty('gluta', -1)">−</button>
+        <span id="glutaQty">0</span>
+        <button onclick="changeQty('gluta', 1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 2 -->
+  <div class="product">
+    <img
+      src="https://raw.githubusercontent.com/zaidxyz78686-png/ALMARIShoppings-Cart./refs/heads/main/WhatsApp%20Image%202026-09-22%20at%205.06.17%20PM.jpeg"
+      alt="Knocks Glow Fairness and Anti Aging Serum">
+
+    <div class="product-info">
+      <div class="product-name">
+        Knocks Glow Fairness & Anti-Aging Serum
+      </div>
+
+      <div class="old-price">Original Price: Rs. 1,500</div>
+      <div class="price">Rs. 699</div>
+
+      <div class="quantity">
+        <button onclick="changeQty('antiAge', -1)">−</button>
+        <span id="antiAgeQty">0</span>
+        <button onclick="changeQty('antiAge', 1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 3 -->
+  <div class="product">
+    <img
+      src="https://raw.githubusercontent.com/zaidxyz78686-png/ALMARIShoppings-Cart./refs/heads/main/WhatsApp%20Image%202026-09-22%20at%205.23.16%20PM.jpeg"
+      alt="Knocks Glow Multi Vitamin Serum">
+
+    <div class="product-info">
+      <div class="product-name">
+        Knocks Glow Multi Vitamin Serum
+      </div>
+
+      <div class="old-price">Original Price: Rs. 1,500</div>
+      <div class="price">Rs. 699</div>
+
+      <div class="quantity">
+        <button onclick="changeQty('multi', -1)">−</button>
+        <span id="multiQty">0</span>
+        <button onclick="changeQty('multi', 1)">+</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CUSTOMER INFORMATION -->
+<div class="card">
+  <h2>👤 Customer Information</h2>
+
+  <label>Full Name *</label>
+  <input type="text" id="name" required>
+
+  <label>Mobile Number *</label>
+  <input type="tel" id="phone" required>
+
+  <label>Gmail / Email *</label>
+  <input type="email" id="email" required>
+
+  <label>Complete Address *</label>
+  <input type="text" id="address" required>
+
+  <label>City *</label>
+  <input type="text" id="city" required>
+
+  <label>Province *</label>
+  <select id="province" required>
+    <option value="">Select Province</option>
+    <option value="PUNJAB">PUNJAB</option>
+  </select>
+</div>
+
+<!-- TOTAL -->
+<div class="card">
+  <h2>💰 Order Total</h2>
+
+  <div class="total-box">
+
+    <div class="total-row">
+      <span>Products Subtotal</span>
+      <strong>Rs. <span id="subtotal">0</span></strong>
+    </div>
+
+    <div class="total-row">
+      <span>Delivery Charges</span>
+      <strong><s>Rs. 200</s> FREE</strong>
+    </div>
+
+    <div class="total-row grand">
+      <span>Grand Total</span>
+      <strong>Rs. <span id="grandTotal">0</span></strong>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="card">
+  <h2>💳 Payment</h2>
+
+  <div class="payment-note">
+    <strong>⚠️ IMPORTANT — SEND PAYMENT BEFORE ORDER</strong>
+    <br><br>
+
+    Please complete your payment before clicking
+    <strong>Place Order</strong>.
+
+    <br><br>
+
+    <strong>JazzCash:</strong> 03217819034
+
+    <br><br>
+
+    After making payment, select your payment method
+    and attach your payment screenshot below.
+  </div>
+
+  <label>Payment Method *</label>
+  <select id="paymentMethod" required>
+    <option value="">Select Payment Method</option>
+    <option value="JazzCash">JazzCash</option>
+    <option value="EasyPaisa">EasyPaisa</option>
+  </select>
+
+  <label>Payment Screenshot *</label>
+  <input type="file" id="screenshot" accept="image/*" required>
+</div>
+
+<!-- PLACE ORDER -->
+<div class="card">
+
+  <button class="place-order" id="placeOrderBtn" onclick="placeOrder()">
+    PLACE ORDER
+  </button>
+
+  <div class="message" id="message"></div>
+
+  <div id="successBox"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* YOUR GOOGLE APPS SCRIPT WEB APP */
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbw02LShyFdwGAkpw0C82YPoL3sJmhqxaZ4_QngEX5vtnTtc-fQoRFOljkDuLUc5jWio/exec";
+
+
+/* PRODUCT QUANTITIES */
+let quantities = {
+  gluta: 0,
+  multi: 0,
+  antiAge: 0
+};
+
+
+/* PRODUCT PRICES */
+const prices = {
+  gluta: 550,
+  multi: 699,
+  antiAge: 699
+};
+
+
+/* CHANGE QUANTITY */
+function changeQty(product, amount) {
+
+  quantities[product] += amount;
+
+  if (quantities[product] < 0) {
+    quantities[product] = 0;
+  }
+
+  document.getElementById(product + "Qty").textContent =
+    quantities[product];
+
+  calculateTotal();
+}
+
+
+/* CALCULATE TOTAL */
+function calculateTotal() {
+
+  const subtotal =
+    (quantities.gluta * prices.gluta) +
+    (quantities.multi * prices.multi) +
+    (quantities.antiAge * prices.antiAge);
+
+  const delivery = 0;
+
+  const grandTotal = subtotal + delivery;
+
+  document.getElementById("subtotal").textContent =
+    subtotal.toLocaleString();
+
+  document.getElementById("grandTotal").textContent =
+    grandTotal.toLocaleString();
+
+  return {
+    subtotal,
+    delivery,
+    grandTotal
+  };
+}
+
+
+/* CREATE ORDER ID */
+function createOrderId() {
+
+  const random =
+    Math.random().toString(36).substring(2, 8).toUpperCase();
+
+  return "ALM-" + Date.now() + "-" + random;
+}
+
+
+/* READ IMAGE AS DATA */
+function readScreenshot(file) {
+
+  return new Promise((resolve, reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      resolve(reader.result);
+    };
+
+    reader.onerror = function() {
+      reject(new Error("Could not read screenshot."));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+
+/* PLACE ORDER */
+async function placeOrder() {
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const phone =
+    document.getElementById("phone").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const address =
+    document.getElementById("address").value.trim();
+
+  const city =
+    document.getElementById("city").value.trim();
+
+  const province =
+    document.getElementById("province").value;
+
+  const paymentMethod =
+    document.getElementById("paymentMethod").value;
+
+  const screenshotFile =
+    document.getElementById("screenshot").files[0];
+
+  const total = calculateTotal();
+
+
+  /* CHECK PRODUCTS */
+  if (total.subtotal <= 0) {
+    alert("Please select at least one product.");
+    return;
+  }
+
+
+  /* CHECK CUSTOMER INFORMATION */
+  if (
+    !name ||
+    !phone ||
+    !email ||
+    !address ||
+    !city ||
+    !province
+  ) {
+
+    alert("Please fill all required customer information.");
+    return;
+  }
+
+
+  /* CHECK PAYMENT */
+  if (!paymentMethod) {
+    alert("Please select your payment method.");
+    return;
+  }
+
+
+  if (!screenshotFile) {
+    alert("Please attach your payment screenshot.");
+    return;
+  }
+
+
+  const button =
+    document.getElementById("placeOrderBtn");
+
+  const message =
+    document.getElementById("message");
+
+  const successBox =
+    document.getElementById("successBox");
+
+
+  button.disabled = true;
+
+  button.textContent = "PLACING ORDER...";
+
+  message.textContent =
+    "Your order is being submitted. Please wait...";
+
+  successBox.innerHTML = "";
+
+
+  try {
+
+    /* READ PAYMENT SCREENSHOT */
+    const screenshot =
+      await readScreenshot(screenshotFile);
+
+
+    /* CREATE UNIQUE ORDER ID */
+    const orderId =
+      createOrderId();
+
+
+    /* DATA SENT TO GOOGLE SHEET */
+    const orderData = {
+
+      orderId: orderId,
+
+      name: name,
+
+      phone: phone,
+
+      email: email,
+
+      address: address,
+
+      city: city,
+
+      province: province,
+
+      glutaQty: quantities.gluta,
+
+      multiQty: quantities.multi,
+
+      antiAgeQty: quantities.antiAge,
+
+      subtotal: total.subtotal,
+
+      delivery: total.delivery,
+
+      grandTotal: total.grandTotal,
+
+      paymentMethod: paymentMethod,
+
+      screenshot: screenshot
+    };
+
+
+    /* SEND TO APPS SCRIPT */
+    const response = await fetch(
+      SCRIPT_URL,
+      {
+        method: "POST",
+
+        body: JSON.stringify(orderData)
+      }
+    );
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error || "Order could not be placed."
+      );
+
+    }
+
+
+    /* SUCCESS */
+    button.textContent = "ORDER PLACED ✓";
+
+    message.textContent = "";
+
+    successBox.innerHTML = `
+      <div class="success">
+
+        <strong>🎉 ORDER PLACED SUCCESSFULLY!</strong>
+
+        <br><br>
+
+        Your Order ID is:
+
+        <br>
+
+        <strong>${result.orderId}</strong>
+
+        <br><br>
+
+        Please save this Order ID.
+
+        <br><br>
+
+        <strong>Grand Total: Rs. ${total.grandTotal.toLocaleString()}</strong>
+
+        <br><br>
+
+        Your order has been received successfully.
+
+      </div>
+    `;
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    button.disabled = false;
+
+    button.textContent = "PLACE ORDER";
+
+    message.textContent =
+      "Order could not be submitted. Please try again.";
+
+    alert(
+      "Order failed: " + error.message
+    );
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
