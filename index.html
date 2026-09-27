@@ -219,6 +219,154 @@ input, select {
     font-size: 16px;
   }
 }
+.cancel-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.cancel-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #f85606;
+}
+
+.cancel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.cancel-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #fff1eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.cancel-title {
+  margin: 0;
+  font-size: 21px;
+}
+
+.cancel-subtitle {
+  color: #777;
+  margin: 3px 0 18px;
+  font-size: 14px;
+}
+
+.cancel-info {
+  background: #fff8f3;
+  border: 1px solid #ffe0cf;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 17px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cancel-info strong {
+  color: #d84315;
+}
+
+.cancel-card label {
+  margin-top: 12px;
+}
+
+.cancel-card input {
+  border: 1px solid #d6d6d6;
+  transition: 0.2s;
+}
+
+.cancel-card input:focus {
+  outline: none;
+  border-color: #f85606;
+  box-shadow: 0 0 0 3px rgba(248,86,6,0.10);
+}
+
+.cancel-check-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-check-btn:hover {
+  background: #222;
+}
+
+.cancel-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #e53935;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+.cancel-btn:hover {
+  background: #c62828;
+}
+
+.order-result {
+  margin-top: 17px;
+  padding: 17px;
+  border-radius: 12px;
+  background: #f7f7f7;
+  border: 1px solid #e3e3e3;
+  line-height: 1.8;
+}
+
+.cancel-success {
+  background: #e8f8ef;
+  border: 1px solid #b7e6c9;
+  color: #176b38;
+  padding: 17px;
+  border-radius: 12px;
+  margin-top: 17px;
+  line-height: 1.7;
+}
+
+.cancel-error {
+  background: #fff0f0;
+  border: 1px solid #f3c1c1;
+  color: #a52323;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 17px;
+  line-height: 1.6;
+}
+  {
+  background: #ffe0e0;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
 </style>
 </head>
 
@@ -390,7 +538,58 @@ input, select {
   <label>Payment Screenshot *</label>
   <input type="file" id="screenshot" accept="image/*" required>
 </div>
+<!-- CANCEL ORDER -->
+<div class="card cancel-card">
 
+  <div class="cancel-header">
+
+    <div class="cancel-icon">
+      📦
+    </div>
+
+    <div>
+      <h2 class="cancel-title">Manage Your Order</h2>
+
+      <div class="cancel-subtitle">
+        Check your order status or cancel your order
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cancel-info">
+    ⏱️ <strong>Cancellation Policy:</strong>
+    You can cancel your order within
+    <strong>8 hours</strong> of placing it.
+  </div>
+
+  <label>Order ID *</label>
+
+  <input
+    type="text"
+    id="cancelOrderId"
+    placeholder="Enter your Order ID"
+  >
+
+  <label>Gmail / Email *</label>
+
+  <input
+    type="email"
+    id="cancelEmail"
+    placeholder="Enter the Gmail used for your order"
+  >
+
+  <button
+    type="button"
+    class="cancel-check-btn"
+    onclick="checkOrderForCancellation()"
+  >
+    🔍 CHECK ORDER
+  </button>
+
+  <div id="cancelResult"></div>
+
+</div>
 <!-- PLACE ORDER -->
 <div class="card">
 
@@ -709,7 +908,228 @@ async function placeOrder() {
   }
 
 }
+/* CHECK ORDER FOR CANCELLATION */
+async function checkOrderForCancellation() {
 
+  const orderId =
+    document.getElementById("cancelOrderId").value.trim();
+
+  const email =
+    document.getElementById("cancelEmail").value.trim();
+
+  const resultBox =
+    document.getElementById("cancelResult");
+
+  if (!orderId || !email) {
+    resultBox.innerHTML = `
+      <div class="cancel-error">
+        Please enter your Order ID and Gmail.
+      </div>
+    `;
+    return;
+  }
+
+  resultBox.innerHTML = `
+    <div class="order-result">
+      🔍 Checking your order...
+    </div>
+  `;
+
+  try {
+
+    const url =
+      SCRIPT_URL +
+      "?orderId=" +
+      encodeURIComponent(orderId);
+
+    const response = await fetch(url);
+
+    const result = await response.json();
+
+    if (!result.success) {
+
+      resultBox.innerHTML = `
+        <div class="cancel-error">
+          ${result.error || "Order not found."}
+        </div>
+      `;
+
+      return;
+    }
+
+    /* VERIFY CUSTOMER EMAIL */
+
+    if (
+      String(result.email).trim().toLowerCase() !==
+      email.trim().toLowerCase()
+    ) {
+
+      resultBox.innerHTML = `
+        <div class="cancel-error">
+          ❌ Gmail does not match this order.
+        </div>
+      `;
+
+      return;
+    }
+
+    const status =
+      String(result.status || "Confirmed");
+
+    if (status.toLowerCase() === "cancelled") {
+
+      resultBox.innerHTML = `
+        <div class="cancel-error">
+          This order is already cancelled.
+        </div>
+      `;
+
+      return;
+    }
+
+    resultBox.innerHTML = `
+      <div class="order-result">
+
+        <strong>✓ ORDER FOUND</strong>
+
+        <br><br>
+
+        <strong>Order ID:</strong>
+        ${result.orderId}
+
+        <br>
+
+        <strong>Customer:</strong>
+        ${result.name}
+
+        <br>
+
+        <strong>City:</strong>
+        ${result.city}
+
+        <br>
+
+        <strong>Grand Total:</strong>
+        Rs. ${Number(result.grandTotal).toLocaleString()}
+
+        <br>
+
+        <strong>Status:</strong>
+        ${result.status}
+
+        <br><br>
+
+        <button
+          type="button"
+          class="cancel-btn"
+          onclick="cancelCustomerOrder()"
+        >
+          ❌ CANCEL THIS ORDER
+        </button>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    resultBox.innerHTML = `
+      <div class="cancel-error">
+        ❌ Could not check the order. Please try again.
+      </div>
+    `;
+
+  }
+}
+
+
+/* CANCEL CUSTOMER ORDER */
+async function cancelCustomerOrder() {
+
+  const orderId =
+    document.getElementById("cancelOrderId").value.trim();
+
+  const email =
+    document.getElementById("cancelEmail").value.trim();
+
+  const resultBox =
+    document.getElementById("cancelResult");
+
+  if (!orderId || !email) {
+    return;
+  }
+
+  const confirmCancel =
+    confirm(
+      "Are you sure you want to cancel this order?"
+    );
+
+  if (!confirmCancel) {
+    return;
+  }
+
+  resultBox.innerHTML = `
+    <div class="order-result">
+      ⏳ Cancelling your order...
+    </div>
+  `;
+
+  try {
+
+    const url =
+      SCRIPT_URL +
+      "?action=cancel" +
+      "&orderId=" +
+      encodeURIComponent(orderId) +
+      "&email=" +
+      encodeURIComponent(email);
+
+    const response = await fetch(url);
+
+    const result = await response.json();
+
+    if (!result.success) {
+
+      resultBox.innerHTML = `
+        <div class="cancel-error">
+          ❌ ${result.error || "Order could not be cancelled."}
+        </div>
+      `;
+
+      return;
+    }
+
+    resultBox.innerHTML = `
+      <div class="cancel-success">
+
+        <strong>✓ ORDER CANCELLED SUCCESSFULLY</strong>
+
+        <br><br>
+
+        Order ID:
+        <strong>${orderId}</strong>
+
+        <br><br>
+
+        Your order has been cancelled successfully.
+
+        <br><br>
+
+        Status:
+        <strong>Cancelled</strong>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    resultBox.innerHTML = `
+      <div class="cancel-error">
+        ❌ Cancellation failed. Please try again.
+      </div>
+    `;
+
+  }
+}
 </script>
 
 </body>
